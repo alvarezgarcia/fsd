@@ -16,6 +16,15 @@ var DonorSchema = Schema({
 	},
 	blood_group: {
 		type: String
+	},
+	ip_address: {
+		type: String
+	},
+	coordinates: {
+		type: String
+	},
+	hash: {
+		type: String
 	}
 });
 
