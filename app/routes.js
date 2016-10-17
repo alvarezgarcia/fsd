@@ -1,3 +1,5 @@
+var path = require('path');
+
 var Donor = require('./models/donor');
 
 module.exports = function(app) {
@@ -6,6 +8,11 @@ module.exports = function(app) {
 		Donor.find(function(err, ds) {
 			res.json(ds);
 		});
+	});
+
+
+	app.get('*', function(req, res) {
+		res.sendFile(path.join(__dirname, '../public/index.html')); 
 	});
 
 };
