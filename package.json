@@ -1,0 +1,23 @@
+{
+  "name": "blood-donor-system",
+  "version": "0.0.1",
+  "description": "Blood donation management system to facilitate the patients from all around the world, find blood donors near them. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raichuk/fsd.git"
+  },
+  "keywords": [
+    "mongo",
+    "express"
+  ],
+  "author": "Sebastián Alvarez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raichuk/fsd/issues"
+  },
+  "homepage": "https://github.com/raichuk/fsd#readme"
+}
