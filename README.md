@@ -1,6 +1,6 @@
 # Blood donor service
 
-## Requerimientos (debian)
+## Install requirements (debian-only)
 ```
 $ make reqs 
 ```
