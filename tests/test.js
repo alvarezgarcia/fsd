@@ -16,8 +16,8 @@ describe("Get all donors", function(){
 
 	    DonorMock.expects('find').yields(null, expectedResult);
 	    Donor.find(function (err, result) {
-		Donor.verify();
-		Donor.restore();
+		DonorMock.verify();
+		DonorMock.restore();
 		expect(result.status).to.be.true;
 		done();
 	    });
@@ -38,4 +38,21 @@ it("should return error", function(done){
     });
 });
 */
+	
+});
+
+describe("Get all donors", function(){
+	it("should create new donor", function(done){
+		var DonorMock = sinon.mock(new Donor({ todo: 'Save new donor'}));
+		var donor = DonorMock.object;
+		var expectedResult = { status: true };
+
+		DonorMock.expects('save').yields(null, expectedResult);
+			donor.save(function (err, result) {
+			DonorMock.verify();
+			DonorMock.restore();
+			expect(result.status).to.be.true;
+			done();
+		});
+	});
 });
