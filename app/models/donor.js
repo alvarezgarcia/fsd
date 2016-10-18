@@ -5,7 +5,7 @@ var DonorSchema = Schema({
 	first_name: {
 		type: String
 	},
-	first_name: {
+	last_name: {
 		type: String
 	},
 	contact_number: {

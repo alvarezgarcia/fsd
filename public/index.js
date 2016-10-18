@@ -15,11 +15,47 @@ var MainLayout = React.createClass({
   }
 })
 
+
 var DonorLayout = React.createClass({
+	getInitialState: function() {
+		return {
+			'donorFirstName': '',
+			'donorLastName': ''
+		}
+	},
+	handleOnChange: function(t) {
+		this.setState({
+			[t.target.name]: t.target.value	
+		});
+	},
+	handleOnSubmit: function(e) {
+		e.preventDefault();
+		console.log(this.state);
+		$.ajax({
+			url: '/api/donors/',
+			contentType: 'application/json', 
+			type: 'POST',
+			data: JSON.stringify(this.state),
+			success: function(data) {
+				console.log('Joya');
+				//this.setState({data: data});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.log('Mal');
+			}.bind(this)
+		});
+	},
 	render: function() {
 		return (
-			<div>Implement</div>
-	       )
+			<div>
+				<div>Map</div>
+				<form onSubmit={this.handleOnSubmit}>
+					<input type="text" placeholder="Ingrese" value={this.state.donorFirstName} name="donorFirstName" onChange={this.handleOnChange}/>
+					<input type="text" placeholder="Ingrese" value={this.state.donorLastName} name="donorLastName" onChange={this.handleOnChange}/>
+					<input type="submit" value="Post"/>
+				</form>
+			</div>
+		)
 	}
 })
 
