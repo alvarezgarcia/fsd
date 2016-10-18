@@ -6,4 +6,5 @@ reqs:
 	sudo /etc/init.d/mongodb restart
 
 start:
+	webpack -p
 	npm start
