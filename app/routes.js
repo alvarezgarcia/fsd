@@ -14,11 +14,20 @@ module.exports = function(app) {
 			if(err) return res.send(500, err.message);
 			res.status(200).jsonp(d);
 		});
+
 	});
 
 	app.get('/api/donors', function(req, res) {
 		Donor.find(function(err, ds) {
-			res.json(ds);
+
+			var r = ds.map(function(d) {
+				return {
+					first_name: d.first_name,
+					last_name: d.last_name
+				}
+			});
+
+			res.json(r);
 		});
 	});
 
