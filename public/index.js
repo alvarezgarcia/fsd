@@ -62,19 +62,13 @@ var DonorLayout = React.createClass({
 })
 
 var PatientLayout = React.createClass({
-	getInitialState: function() {
-		return({
-			'donorsList': []	
-		})
-	},
-	componentDidMount: function() {
+	_fetchData: function() {
 		$.ajax({
 			url: '/api/donors/',
 			type: 'GET',
 			success: function(data) {
-				var nDonorsList = this.state.donorsList.concat(data)
 				this.setState({
-					donorsList: nDonorsList
+					donorsList: data
 				})
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -82,8 +76,15 @@ var PatientLayout = React.createClass({
 			}.bind(this)
 		});
 	},
+	getInitialState: function() {
+		return({
+			'donorsList': []	
+		})
+	},
+	componentDidMount: function() {
+		setInterval(this._fetchData, 1000);
+	},
 	render: function() {
-		console.log(this.state);
 		return (
 			<div>
 				<div>Implement</div>
@@ -96,8 +97,16 @@ var PatientLayout = React.createClass({
 						</tr>
 					</thead>
 
-				<tbody>
-				</tbody>
+					<tbody>
+					{this.state.donorsList.map(function(donor, i) {
+						return (
+							<tr key={i}>
+								<td>{donor.first_name}</td>
+								<td>{donor.last_name}</td>
+							</tr>
+						)
+					})}
+					</tbody>
 
 				</table>
 			</div>
