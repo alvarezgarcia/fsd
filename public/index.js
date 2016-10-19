@@ -121,13 +121,24 @@ var PatientLayout = React.createClass({
 var MapComponent = React.createClass({
 	getInitialState: function() {
 		return({
+			lat: 51.505,
+			lng: -0.09,
 			zoom: 13
 		})
+	},
+	componentDidMount: function() {
+		var self = this;
+		navigator.geolocation.getCurrentPosition(function(pos) {
+			self.setState({
+				lat: pos.coords.latitude,
+				lng: pos.coords.longitude
+			})
+		});
 	},
 	render: function() {
 
 		return (
-			<Map center={[51.505, -0.09]} zoom={this.state.zoom}>
+			<Map center={[this.state.lat, this.state.lng]} zoom={this.state.zoom}>
 					<TileLayer
 					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 					url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
@@ -137,6 +148,7 @@ var MapComponent = React.createClass({
 	}
 });
 
+/*
 ReactDOM.render((
   <Router history={browserHistory}>
         <Route path="/" component={MainLayout} />
@@ -144,8 +156,9 @@ ReactDOM.render((
         <Route path="patients" component={PatientLayout} />
   </Router>
 ), document.getElementById('app'))
+*/
 
-//ReactDOM.render(<MapComponent/>, document.getElementById('app'));
+ReactDOM.render(<MapComponent/>, document.getElementById('app'));
 
 
 /*
