@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var DonorSchema = Schema({
-	first_name: {
+	firstName: {
 		type: String
 	},
-	last_name: {
+	lastName: {
 		type: String
 	},
 	contact_number: {
