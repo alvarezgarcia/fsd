@@ -9,7 +9,6 @@ module.exports = function(app) {
 			last_name: req.body.lastName,
 		});
 
-		console.log(d);
 		d.save(function(err, d) {
 			if(err) return res.send(500, err.message);
 			res.status(200).jsonp(d);
@@ -27,7 +26,6 @@ module.exports = function(app) {
 				}
 			});
 
-			console.log(r);
 			res.json(r);
 		});
 	});
