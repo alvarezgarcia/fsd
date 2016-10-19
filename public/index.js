@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+
+var socket = io()
 
 
 
@@ -30,18 +33,8 @@ var DonorLayout = React.createClass({
 	},
 	handleOnSubmit: function(e) {
 		e.preventDefault();
-		$.ajax({
-			url: '/api/donors/',
-			contentType: 'application/json', 
-			type: 'POST',
-			data: JSON.stringify(this.state),
-			success: function(data) {
-				console.log('Joya');
-			}.bind(this),
-			error: function(xhr, status, err) {
-				console.log('Mal');
-			}.bind(this)
-		});
+		socket.emit('new-donor', this.state);
+		
 		this.setState({
 			'firstName': '',
 			'lastName': ''
@@ -62,14 +55,15 @@ var DonorLayout = React.createClass({
 })
 
 var PatientLayout = React.createClass({
-	_fetchData: function() {
+	_fetchData: function(cb) {
 		$.ajax({
 			url: '/api/donors/',
 			type: 'GET',
-			success: function(data) {
+			success: function(dl) {
 				this.setState({
-					donorsList: data
-				})
+					donorsList: dl
+				});
+				cb();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.log('Mal');
@@ -82,7 +76,17 @@ var PatientLayout = React.createClass({
 		})
 	},
 	componentDidMount: function() {
-		setInterval(this._fetchData, 1000);
+		var self = this;
+		this._fetchData(function() {
+
+			socket.on('update-donors', function(d) {
+				self.setState({
+					donorsList: self.state.donorsList.concat(d)
+				});
+
+				console.log(self.state);
+			});	
+		})
 	},
 	render: function() {
 		return (
@@ -101,8 +105,8 @@ var PatientLayout = React.createClass({
 					{this.state.donorsList.map(function(donor, i) {
 						return (
 							<tr key={i}>
-								<td>{donor.first_name}</td>
-								<td>{donor.last_name}</td>
+								<td>{donor.firstName}</td>
+								<td>{donor.lastName}</td>
 							</tr>
 						)
 					})}
@@ -114,6 +118,25 @@ var PatientLayout = React.createClass({
 	}
 })
 
+var MapComponent = React.createClass({
+	getInitialState: function() {
+		return({
+			zoom: 13
+		})
+	},
+	render: function() {
+
+		return (
+			<Map center={[51.505, -0.09]} zoom={this.state.zoom}>
+					<TileLayer
+					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+					url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+					/>
+			</Map>
+		)
+	}
+});
+
 ReactDOM.render((
   <Router history={browserHistory}>
         <Route path="/" component={MainLayout} />
@@ -121,6 +144,8 @@ ReactDOM.render((
         <Route path="patients" component={PatientLayout} />
   </Router>
 ), document.getElementById('app'))
+
+//ReactDOM.render(<MapComponent/>, document.getElementById('app'));
 
 
 /*

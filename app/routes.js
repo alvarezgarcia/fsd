@@ -5,8 +5,8 @@ var Donor = require('./models/donor');
 module.exports = function(app) {
 	app.post('/api/donors', function(req, res) {
 		var d = new Donor({
-			first_name: req.body.firstName,
-			last_name: req.body.lastName,
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
 		});
 
 		d.save(function(err, d) {
@@ -18,15 +18,7 @@ module.exports = function(app) {
 
 	app.get('/api/donors', function(req, res) {
 		Donor.find(function(err, ds) {
-
-			var r = ds.map(function(d) {
-				return {
-					first_name: d.first_name,
-					last_name: d.last_name
-				}
-			});
-
-			res.json(r);
+			res.json(ds);
 		});
 	});
 
