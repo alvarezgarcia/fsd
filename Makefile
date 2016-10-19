@@ -3,8 +3,9 @@ reqs:
 	npm install
 	sudo npm install -g webpack
 	sudo npm install -g webpack-dev-server
+	sudo npm install -g nodemon
 	sudo /etc/init.d/mongodb restart
 
 start:
 	webpack -p
-	npm start
+	nodemon server.js
