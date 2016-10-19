@@ -19,8 +19,8 @@ var MainLayout = React.createClass({
 var DonorLayout = React.createClass({
 	getInitialState: function() {
 		return {
-			'donorFirstName': '',
-			'donorLastName': ''
+			'firstName': '',
+			'lastName': ''
 		}
 	},
 	handleOnChange: function(t) {
@@ -30,7 +30,6 @@ var DonorLayout = React.createClass({
 	},
 	handleOnSubmit: function(e) {
 		e.preventDefault();
-		console.log(this.state);
 		$.ajax({
 			url: '/api/donors/',
 			contentType: 'application/json', 
@@ -38,11 +37,14 @@ var DonorLayout = React.createClass({
 			data: JSON.stringify(this.state),
 			success: function(data) {
 				console.log('Joya');
-				//this.setState({data: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.log('Mal');
 			}.bind(this)
+		});
+		this.setState({
+			'firstName': '',
+			'lastName': ''
 		});
 	},
 	render: function() {
@@ -50,8 +52,8 @@ var DonorLayout = React.createClass({
 			<div>
 				<div>Map</div>
 				<form onSubmit={this.handleOnSubmit}>
-					<input type="text" placeholder="Ingrese" value={this.state.donorFirstName} name="donorFirstName" onChange={this.handleOnChange}/>
-					<input type="text" placeholder="Ingrese" value={this.state.donorLastName} name="donorLastName" onChange={this.handleOnChange}/>
+					<input type="text" placeholder="Ingrese" value={this.state.firstName} name="firstName" onChange={this.handleOnChange}/>
+					<input type="text" placeholder="Ingrese" value={this.state.lastName} name="lastName" onChange={this.handleOnChange}/>
 					<input type="submit" value="Post"/>
 				</form>
 			</div>
@@ -60,10 +62,46 @@ var DonorLayout = React.createClass({
 })
 
 var PatientLayout = React.createClass({
+	getInitialState: function() {
+		return({
+			'donorsList': []	
+		})
+	},
+	componentDidMount: function() {
+		$.ajax({
+			url: '/api/donors/',
+			type: 'GET',
+			success: function(data) {
+				var nDonorsList = this.state.donorsList.concat(data)
+				this.setState({
+					donorsList: nDonorsList
+				})
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.log('Mal');
+			}.bind(this)
+		});
+	},
 	render: function() {
+		console.log(this.state);
 		return (
-			<div>Implement</div>
-	       )
+			<div>
+				<div>Implement</div>
+				<table>
+
+					<thead>
+						<tr>
+							<th>First Name</th>
+							<th>Last Name</th>
+						</tr>
+					</thead>
+
+				<tbody>
+				</tbody>
+
+				</table>
+			</div>
+		)
 	}
 })
 
