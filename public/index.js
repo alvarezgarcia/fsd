@@ -5,8 +5,6 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 
 var socket = io()
 
-
-
 var MainLayout = React.createClass({
   render: function() {
     return (
@@ -33,7 +31,19 @@ var DonorLayout = React.createClass({
 	},
 	handleOnSubmit: function(e) {
 		e.preventDefault();
-		socket.emit('new-donor', this.state);
+		$.ajax({
+			url: '/api/donors/',
+			contentType: 'application/json', 
+			type: 'POST',
+			data: JSON.stringify(this.state),
+			success: function(data) {
+				console.log('Joya');
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.log('Mal');
+			}.bind(this)
+		});
+		//socket.emit('new-donor', this.state);
 		
 		this.setState({
 			'firstName': '',
@@ -148,7 +158,6 @@ var MapComponent = React.createClass({
 	}
 });
 
-/*
 ReactDOM.render((
   <Router history={browserHistory}>
         <Route path="/" component={MainLayout} />
@@ -156,9 +165,10 @@ ReactDOM.render((
         <Route path="patients" component={PatientLayout} />
   </Router>
 ), document.getElementById('app'))
-*/
 
+/*
 ReactDOM.render(<MapComponent/>, document.getElementById('app'));
+*/
 
 
 /*

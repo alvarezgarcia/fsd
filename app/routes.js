@@ -2,7 +2,7 @@ var path = require('path');
 
 var Donor = require('./models/donor');
 
-module.exports = function(app) {
+module.exports = function(app, io) {
 	app.post('/api/donors', function(req, res) {
 		var d = new Donor({
 			firstName: req.body.firstName,
@@ -13,6 +13,8 @@ module.exports = function(app) {
 			if(err) return res.send(500, err.message);
 			res.status(200).jsonp(d);
 		});
+
+		io.emit('update-donors', d);
 
 	});
 

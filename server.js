@@ -19,21 +19,9 @@ mongoose.connect('mongodb://localhost/blood-donor');
 app.use(express.static('./public/dist'));
 app.use(bodyParser.json());
 
-routes(app);
+routes(app, io);
 
-io.on('connection', function(s) {
-	s.on('new-donor', function(d) {
 
-		var d = new Donor({
-			firstName: d.firstName,
-			lastName: d.lastName,
-		});
-
-		d.save(function(err, d) {
-			io.emit('update-donors', d);
-		});
-	});
-});
 
 http.listen(config.port, function() {
 	console.log("Blood donor service started in "+config.port);
